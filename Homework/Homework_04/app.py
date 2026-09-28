@@ -234,10 +234,12 @@ with Session() as session:
 
 # Задача 4 - количество продуктов в каждой категории
 with Session() as session:
-    query = (select(Category.name,
-                    func.count(Product.id)
-                   )
-        .join(Product)
+    query = (
+        select(
+            Category.name,
+            func.count(Product.id)
+        )
+        .outerjoin(Product) # LEFT JOIN — выводим каждую категорию, даже если продуктов нет
         .group_by(Category.id)
     )
 
@@ -248,7 +250,6 @@ with Session() as session:
             category_name,
             product_count
         )
-
 
 # Задача 5 - категории, где больше одного продукта
 with Session() as session:
